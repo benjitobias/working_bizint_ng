@@ -1,0 +1,22 @@
+{% extends 'base.html' %}}
+{% load static %}
+{% block content %}
+{% if user %}
+{{user}}
+{% endif %}
+{% if action_list %}
+<ul>
+    {% for action in action_list %}
+        <li><a href="{% url 'counter:info' action.id %}">{{ action.name }}</a></li>
+    {% endfor %}
+</ul>
+{% else %}
+<p>No actions</p>
+{% endif %}
+
+<div class="container">
+    <div class="jumbotron">
+        <h1>TEST</h1>
+    </div>
+</div>
+{% endblock %}}
