@@ -19,14 +19,7 @@ class IndexView(generic.ListView):
 
 
 def index(request):
-    # actions = Action.objects.all()
-    user = request.user
-    actions = get_objects_for_user(user, 'counter.view_action')
-    context = {
-        'action_list': actions,
-        'user': user,
-    }
-    return render(request, 'counter/index.html', context)
+    return render(request, 'counter/index.html')
 
 
 @permission_required_or_403('counter.view_action', (Action, 'id', 'action_id'))

@@ -6,14 +6,16 @@
 <head>
     <meta charset="UTF-8">
     <title>{% block title %}Bizint{% endblock %}</title>
+    <script src="{% static 'js/jquery-3.5.1.slim.min.js' %}"></script>
+    <script src="{% static 'js/bootstrap.bundle.min.js' %}"></script>
     <link rel="stylesheet" href="{% static 'css/bootstrap.min.css' %}">
-    <script src="{% static 'js/bootstrap.min.js' %}"></script>
     <link rel="stylesheet" type="text/css" href="{% static 'counter/style.css' %}">
     <link rel="stylesheet" href="{% static 'fa/css/all.min.css' %}">
 
     {% block head %}{% endblock %}
 </head>
 <body>
+
 <!--Navbar-->
 <nav class="navbar navbar-expand-lg navbar-light bg-light">
 
@@ -21,26 +23,41 @@
   <div class="collapse navbar-collapse" id="navbarSupportedContent">
     <ul class="navbar-nav mr-auto">
       <li class="nav-item active">
-        <a class="nav-link" href="#">Home <span class="sr-only">(current)</span></a>
+        <a class="nav-link" href="/">Home <span class="sr-only">(current)</span></a>
       </li>
       <li class="nav-item dropdown">
         <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-          Dropdown
+          Actions
         </a>
         <div class="dropdown-menu" aria-labelledby="navbarDropdown">
-          <a class="dropdown-item" href="#">Action</a>
-          <a class="dropdown-item" href="#">Another action</a>
+        {% if actions %}
+            {% for action in actions %}
+            <a class="dropdown-item" href="{% url 'counter:info' action.id %}">{{ action.name }}</a>
+            {% endfor %}
+        {% else %}
+            <a class="dropdown-item">No actions</a>
+        {% endif %}
           <div class="dropdown-divider"></div>
-          <a class="dropdown-item" href="#">Something else here</a>
+          <a class="dropdown-item" href="#">Nothing</a>
         </div>
       </li>
     </ul>
-    <form class="form-inline my-2 my-lg-0">
-      <input class="form-control mr-sm-2" type="search" placeholder="Search" aria-label="Search">
-      <button class="btn btn-outline-success my-2 my-sm-0" type="submit">Search</button>
-    </form>
+    <div class="my-2 my-lg-0">
+        <ul class="navbar-nav mr-auto">
+        {% if actions %}
+            <li class="nav-item">
+                <a class="navbar-text mb-0" href="{% url 'logout' %}">{{ user }} - Logout</a>
+            </li>
+        {% else %}
+            <li class="nav-item">
+                <a class="navbar-text mb-0" href="{% url 'login' %}">Login</a>
+            </li>
+        {% endif %}
+        </ul>
+    </div>
   </div>
 </nav>
+
 <!--/.Navbar-->
 {% block content %}
 {% endblock %}
