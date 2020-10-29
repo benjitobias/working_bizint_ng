@@ -7,6 +7,7 @@ from django.http import JsonResponse
 from guardian.shortcuts import get_objects_for_user
 
 from .models import Action, Count
+from .telegram_bot import update_telegram_channel
 
 
 class IndexView(generic.ListView):
@@ -25,18 +26,23 @@ def index(request):
 @permission_required_or_403('counter.view_action', (Action, 'id', 'action_id'))
 def info(request, action_id):
     action = get_object_or_404(Action, pk=action_id)
+    print(request.GET)
     return render(request, 'counter/info.html', {'action': action})
 
 
 @permission_required_or_403('counter.change_action', (Action, 'id', 'action_id'))
 def add(request, action_id):
     action = get_object_or_404(Action, pk=action_id)
-    action.count_set.create(count=action.get_count() + 1)
+    if request.method == 'POST':
+        action.count_set.create(count=action.get_count() + 1)
+
+        if request.POST.get('update_telegram'):
+            update_telegram_channel(action)
 
     return render(request, 'counter/info.html', {'action': action})
 
 
-#TODO: implement into info
+# TODO: implement into info
 def populate_actions_chart(request):
     labels = []
     data = []
