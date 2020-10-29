@@ -10,7 +10,7 @@
     <div class="card bg-light">
         <div class="card-body text-center">
             <a class="card-text stretched-link text-decoration-none" href="{% url 'counter:info' action.id %}">{{ action.name }}</a>
-            <p>{{ action.get_latest }} - {{ action.get_count }}</p>
+            <p>{{ action.get_latest_date }} - {{ action.get_count }}</p>
         </div>
     </div>
     {% endfor %}

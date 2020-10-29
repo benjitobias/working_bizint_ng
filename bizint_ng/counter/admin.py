@@ -17,8 +17,19 @@ class ActionAdmin(GuardedModelAdmin):
         ('Date information', {'fields': ['creation_date']}),
     ]
     inlines = [CountInline]
-    list_display = ('name', 'creation_date', 'get_count', 'get_latest')
+    list_display = ('name', 'creation_date', 'get_count', 'latest_date')
 
-#admin.site.register(Action)
-#admin.site.register(Count)
+    def get_count(self, obj):
+        return obj.get_count()
+
+    get_count.short_description = "Count"
+
+    def latest_date(self, obj):
+        try:
+            latest_date = obj.get_latest().update_date
+        except AttributeError:
+            latest_date = None
+        return latest_date
+
+
 admin.site.register(Action, ActionAdmin)

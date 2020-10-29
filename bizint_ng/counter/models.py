@@ -17,7 +17,7 @@ class Action(models.Model):
 
     def get_latest(self):
         try:
-            latest = self.count_set.last().update_date
+            latest = self.count_set.last()
         except AttributeError:
             latest = None
         return latest
