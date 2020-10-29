@@ -31,32 +31,11 @@
             <button type="submit" class="btn btn-primary btn-block" value="login">Log in</button>
         </div>
         <div class="clearfix">
-            <label class="float-left form-check-label"><input type="checkbox"> Remember me</label>
-            <a href="#" class="float-right">Forgot Password?</a>
+            <!-- TODO: implement  <label class="float-left form-check-label"><input type="checkbox"> Remember me</label> -->
+            <!-- TODO: implement <a href="#" class="float-right">Forgot Password?</a> -->
         </div>
     </form>
-    <p class="text-center"><a href="#">Create an Account</a></p>
+    <!-- TODO: implement  <p class="text-center"><a href="#" clas="btn">Create an Account</a></p> -->
 </div>
-
-
-<form method="post" action="{% url 'login' %}">
-{% csrf_token %}
-<table>
-<tr>
-    <td>{{ form.username.label_tag }}</td>
-    <td>{{ form.username }}</td>
-</tr>
-<tr>
-    <td>{{ form.password.label_tag }}</td>
-    <td>{{ form.password }}</td>
-</tr>
-</table>
-
-<input type="submit" value="login">
-<input type="hidden" name="next" value="{{ next }}">
-</form>
-
-{# Assumes you setup the password_reset view in your URLconf #}
-<p><a href="{% url 'password_reset' %}">Lost password?</a></p>
 
 {% endblock %}
