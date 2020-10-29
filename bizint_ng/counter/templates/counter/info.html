@@ -15,11 +15,9 @@
             <input type="submit" value="+1">
         {% endif %}
         </form>
-        <h3 style="padding-top: 75px;">Last updated: {{ action.get_latest_date }}</h3>
+        <h3 style="padding-top: 75px;">Last updated: {{ action.get_latest.update_date }}</h3>
         <h4 style="padding-top: 75px;">Count stared: {{ action.creation_date }}</h4>
     </div>
 </div>
-
-{{ action.get_latest.update_date}}
 
 {% endblock %}}
