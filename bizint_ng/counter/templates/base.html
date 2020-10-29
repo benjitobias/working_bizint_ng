@@ -34,13 +34,14 @@
             {% for action in actions %}
             <a class="dropdown-item" href="{% url 'counter:info' action.id %}">{{ action.name }}</a>
             {% endfor %}
+        <div class="dropdown-divider"></div>
+        {% with random_action=actions|random %}
+            <a class="dropdown-item" href="{% url 'counter:info' random_action.id %}">Random</a>
+        {% endwith %}
+        </div>
         {% else %}
             <a class="dropdown-item">No actions</a>
         {% endif %}
-          <div class="dropdown-divider"></div>
-            {% with random_action=actions|random %}
-            <a class="dropdown-item" href="{% url 'counter:info' random_action.id %}">Random</a>
-            {% endwith %}
         </div>
       </li>
     </ul>
