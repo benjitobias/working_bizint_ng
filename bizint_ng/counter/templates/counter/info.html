@@ -1,12 +1,9 @@
-{% extends "base.html" %}
+{% extends 'base.html' %}
 {% load guardian_tags %}
 {% block title %}{{ action }}{% endblock %}
 {% block content %}
 
-{{ action }} : {{ count }}
-
-{% if error_message %}<p><strong>{{ error_message }}</strong></p>{% endif %}
-
+{% include 'counter/raw_info.html' %}
 
 {% get_obj_perms request.user for action as "action_perms" %}
 {% if "change_action" in action_perms %}
@@ -14,6 +11,8 @@
     {% csrf_token%}
     <input type="submit" value="+1">
 {% endif %}
-
 </form>
+
+{{ action_perms }}
+
 {% endblock %}}

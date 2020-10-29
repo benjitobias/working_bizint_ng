@@ -1,15 +1,28 @@
 {% extends 'base.html' %}}
+{% load guardian_tags %}
 {% load static %}
 {% block content %}
 
-<ul>
-{% if actions %}
+<div class="container mt-5">
+<div class="card-columns">
+    {% if actions %}
     {% for action in actions %}
-<li><a href="{% url 'counter:info' action.id %}">{{ action.name }}</a></li>
+    <div class="card bg-light">
+        <div class="card-body text-center">
+            <a class="card-text stretched-link text-decoration-none" href="{% url 'counter:info' action.id %}">{{ action.name }}</a>
+            <p>{{ action.get_latest }} - {{ action.get_count }}</p>
+        </div>
+    </div>
     {% endfor %}
-{% else %}
-    <li><p>No actions</p></li>
-{% endif %}
-</ul>
+    {% else %}
+    <div class="card bg-light">
+    <div class="card-body text-center">
+      <p class="card-text">No actions</p>
+    </div>
+  </div>
+    {% endif %}
+</div>
+</div>
+
 
 {% endblock %}}

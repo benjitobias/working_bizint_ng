@@ -44,7 +44,7 @@
     </ul>
     <div class="my-2 my-lg-0">
         <ul class="navbar-nav mr-auto">
-        {% if actions %}
+        {% if user.is_authenticated %}
             <li class="nav-item">
                 <a class="navbar-text mb-0" href="{% url 'logout' %}">{{ user }} - Logout</a>
             </li>
@@ -62,5 +62,6 @@
 {% block content %}
 {% endblock %}
 
+{{ anon }}
 </body>
 </html>
