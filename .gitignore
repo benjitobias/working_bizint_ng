@@ -1,5 +1,6 @@
 *bot_config*
 *.sqlite3
+*.sqlite3.BAK
 
 # Created by .ignore support plugin (hsz.mobi)
 ### Python template
