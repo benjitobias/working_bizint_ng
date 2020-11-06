@@ -1,5 +1,5 @@
 from guardian.shortcuts import get_objects_for_user
-from django.contrib.auth.models import User
+from django.db.models import Count as DbCount
 
 
 def get_user_actions(request):
@@ -9,4 +9,5 @@ def get_user_actions(request):
         actions = None
     else:
         actions = get_objects_for_user(user, 'counter.view_action')
-    return {'actions': actions}
+        ordered_actions = actions.annotate(count_count=DbCount('count')).order_by('-count_count')
+    return {'actions': ordered_actions}
