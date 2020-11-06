@@ -9,5 +9,5 @@ def get_user_actions(request):
         actions = None
     else:
         actions = get_objects_for_user(user, 'counter.view_action')
-        ordered_actions = actions.annotate(count_count=DbCount('count')).order_by('-count_count')
-    return {'actions': ordered_actions}
+        actions = actions.annotate(count_count=DbCount('count')).order_by('-count_count')
+    return {'actions': actions}
