@@ -65,8 +65,10 @@ def graphs(request):
 
 def populate_graphs(request):
     from calendar import month_abbr
-
-    actions = ["Shit", "Fuck", "Fap", "Gym", "Shower"]
+    if request.user.is_authenticated:
+        actions = get_objects_for_user(request.user, 'counter.view_action')
+    else:
+        actions = ["Shit", "Fap", "Gym", "Shower"]
 
     data = dict()
     data['labels'] = month_abbr[1:]
