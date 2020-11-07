@@ -15,7 +15,6 @@ class IndexView(generic.ListView):
     context_object_name = 'action_list'
 
     def get_queryset(self):
-        #return Action.objects.all()
         return get_objects_for_user()
 
 
@@ -57,4 +56,37 @@ def populate_actions_chart(request):
             'labels': labels,
             'data': data
         }
+    return JsonResponse(data=data)
+
+
+def graphs(request):
+    return render(request, 'counter/graphs.html')
+
+
+def populate_graphs(request):
+    from calendar import month_abbr
+
+    actions = ["Shit", "Fuck", "Fap", "Gym", "Shower"]
+
+    data = dict()
+    data['labels'] = month_abbr[1:]
+
+    datasets = list()
+
+    for action_name in actions:
+        action_data = dict()
+        action_data['data'] = list()
+        action_data['fill'] = False
+        action = Action.objects.get(name=action_name)
+        action_data['label'] = action_name
+        for month in range(1, 13):
+            action_count = action.count_set.filter(update_date__year=2020, update_date__month=month).count()
+            action_data['data'].append(action_count)
+
+        datasets.append(action_data)
+
+    data = {
+        'labels': month_abbr[1:],
+        'datasets': datasets
+    }
     return JsonResponse(data=data)

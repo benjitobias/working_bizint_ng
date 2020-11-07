@@ -10,4 +10,7 @@ urlpatterns = [
     path('<int:action_id>/add', views.add, name='add'),
     #TODO: remove from here, will be in info
     path('populate-actions-chart/', views.populate_actions_chart, name='populate_actions_chart'),
+
+    path('graphs/', views.graphs, name='graphs'),
+    path('populate-graphs/', views.populate_graphs, name='populate_graphs'),
 ]
