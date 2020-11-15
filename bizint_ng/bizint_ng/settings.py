@@ -78,8 +78,14 @@ WSGI_APPLICATION = 'bizint_ng.wsgi.application'
 
 DATABASES = {
     'default': {
-        'ENGINE': 'django.db.backends.sqlite3',
-        'NAME': BASE_DIR / 'bizint_ng.sqlite3',
+        # 'ENGINE': 'django.db.backends.sqlite3',
+        # 'NAME': BASE_DIR / 'bizint_ng.sqlite3',
+        'ENGINE': 'django.db.backends.postgresql_psycopg2',
+        'NAME': 'bizint_ng',
+        'USER': 'bizint_ng',
+        'PASSWORD': 'Aa123123',
+        'HOST': 'localhost',
+        'PORT': '',
     }
 }
 
