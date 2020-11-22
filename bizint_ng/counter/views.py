@@ -63,6 +63,10 @@ def graphs(request):
     return render(request, 'counter/graphs.html')
 
 
+def about(request):
+    return render(request, 'counter/about.html')
+
+
 def populate_graphs(request):
     from calendar import month_abbr
     if request.user.is_authenticated:
