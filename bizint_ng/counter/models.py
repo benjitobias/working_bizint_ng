@@ -1,8 +1,10 @@
 from django.db import models
 from django.utils import timezone
+from django.contrib.auth.models import User
 
 
 class Action(models.Model):
+    owner = models.ForeignKey(User, on_delete=models.CASCADE, default=1)
     name = models.CharField(max_length=200)
     creation_date = models.DateTimeField('Date created', default=timezone.now) # Not to call funtion, server will call on run
 
