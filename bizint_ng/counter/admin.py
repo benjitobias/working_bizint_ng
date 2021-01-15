@@ -8,16 +8,18 @@ class CountInline(admin.TabularInline):
     fields = ['action', 'count', 'update_date']
     model = Count
     extra = 0
+    max_num = 3
 
 
 # class ActionAdmin(admin.ModelAdmin):
 class ActionAdmin(GuardedModelAdmin):
     fieldsets = [
         (None, {'fields': ['name']}),
+        (None, {'fields': ['owner']}),
         ('Date information', {'fields': ['creation_date']}),
     ]
     inlines = [CountInline]
-    list_display = ('name', 'creation_date', 'get_count', 'latest_date')
+    list_display = ('name', 'creation_date', 'get_count', 'latest_date', 'owner')
 
     def get_count(self, obj):
         return obj.get_count()
