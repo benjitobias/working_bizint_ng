@@ -22,10 +22,25 @@
         {% csrf_token %}
         <h2 class="text-center">Log in</h2>
         <div class="form-group">
-            <input type="text" class="form-control" placeholder="Username" required="required" id="id_username" name="username">
+            <div class="input-group">
+                <div class="input-group-prepend">
+                    <span class="input-group-text">
+                        <span class="fa fa-user"></span>
+                    </span>
+                </div>
+                <input type="text" class="form-control" name="username" placeholder="Username" required="required">
+            </div>
         </div>
         <div class="form-group">
-            <input type="password" class="form-control" placeholder="Password" required="required" id="id_password" name="password">
+            <!input type="password" class="form-control" placeholder="Password" required="required" id="id_password" name="password"-->
+            <div class="input-group">
+                <div class="input-group-prepend">
+                    <span class="input-group-text">
+                        <i class="fa fa-lock"></i>
+                    </span>
+                </div>
+                <input type="password" class="form-control" name="password" placeholder="Password" required="required">
+            </div>
         </div>
         <div class="form-group">
             <button type="submit" class="btn btn-primary btn-block" value="login">Log in</button>
@@ -34,12 +49,15 @@
             <!-- TODO: implement  <label class="float-left form-check-label"><input type="checkbox"> Remember me</label> -->
             <!-- TODO: implement <a href="#" class="float-right">Forgot Password?</a> -->
         </div>
+        <div class="or-seperator"><i>or</i></div>
+        <div class="text-center social-btn">
+            <a href="{% url 'social:begin' 'facebook' %}" class="btn btn-primary btn-block"><i class="fa fa-facebook"></i> Log in with <b>Facebook</b></a>
+            <a href="{% url 'social:begin' 'twitter' %}" class="btn btn-info btn-block"><i class="fa fa-twitter"></i> Log in with <b>Twitter</b></a>
+			<a href="{% url 'social:begin' 'google-oauth2' %}" class="btn btn-danger btn-block"><i class="fa fa-google"></i> Log in with <b>Google</b></a>
+        </div>
+
     </form>
     <!-- TODO: implement  <p class="text-center"><a href="#" clas="btn">Create an Account</a></p> -->
 </div>
-<div><a href="{% url 'social:begin' 'twitter' %}">Login with Twitter</a></div>
-<div><a href="{% url 'social:begin' 'facebook' %}">Login with Facebook</a></div>
-<div><a href="{% url 'social:begin' 'google-oauth2' %}">Login with Google</a></div>
-
 
 {% endblock %}
