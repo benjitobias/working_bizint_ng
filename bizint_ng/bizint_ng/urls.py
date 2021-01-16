@@ -21,4 +21,6 @@ urlpatterns = [
     path('counter/', include('counter.urls')),
     path('admin/', admin.site.urls),
     path('accounts/', include('django.contrib.auth.urls')),
+    path(r'oauth/', include('social_django.urls', namespace='social')),  # social_django
+    path('settings/', include('counter.urls')),
 ]

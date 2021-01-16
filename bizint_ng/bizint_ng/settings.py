@@ -30,7 +30,10 @@ ALLOWED_HOSTS = []
 
 # Application definition
 
+SOCIAL_AUTH_POSTGRES_JSONFIELD = True  # social_django
+
 INSTALLED_APPS = [
+    'social_django',
     'guardian',
     'counter.apps.CounterConfig',
     'django.contrib.admin',
@@ -49,6 +52,7 @@ MIDDLEWARE = [
     'django.contrib.auth.middleware.AuthenticationMiddleware',
     'django.contrib.messages.middleware.MessageMiddleware',
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
+    'social_django.middleware.SocialAuthExceptionMiddleware'  # social_django
 ]
 
 ROOT_URLCONF = 'bizint_ng.urls'
@@ -65,6 +69,8 @@ TEMPLATES = [
                 'django.template.context_processors.request',
                 'django.contrib.auth.context_processors.auth',
                 'django.contrib.messages.context_processors.messages',
+                'social_django.context_processors.backends',  # social_django
+                'social_django.context_processors.login_redirect',  # social_django
             ],
         },
     },
@@ -130,9 +136,47 @@ STATIC_URL = '/static/'
 LOGIN_REDIRECT_URL = '/'
 LOGOUT_REDIRECT_URL = '/'
 
+#SOCIAL_AUTH_LOGIN_ERROR_URL = '/settings/'
+#SOCIAL_AUTH_LOGIN_REDIRECT_URL = '/settings/'
+#SOCIAL_AUTH_RAISE_EXCEPTIONS = False
+
 AUTHENTICATION_BACKENDS = (
     'django.contrib.auth.backends.ModelBackend', # this is default
     'guardian.backends.ObjectPermissionBackend',
+    'social_core.backends.twitter.TwitterOAuth',  # social_django
+    'social_core.backends.facebook.FacebookOAuth2',  # social_django
+    'social_core.backends.google.GoogleOAuth2',  # social_django
+
 )
 
+SOCIAL_AUTH_PIPELINE = (
+    'social_core.pipeline.social_auth.social_details',
+    'social_core.pipeline.social_auth.social_uid',
+    'social_core.pipeline.social_auth.social_user',
+    'social_core.pipeline.user.get_username',
+    'social_core.pipeline.social_auth.associate_by_email',
+    'social_core.pipeline.user.create_user',
+    'social_core.pipeline.social_auth.associate_user',
+    'social_core.pipeline.social_auth.load_extra_data',
+    'social_core.pipeline.user.user_details',
+)  # django_social
+
 ANONYMOUS_USER_NAME = None
+
+SOCIAL_AUTH_TWITTER_KEY = '9bgWUZDTpgBsdWYDIWclASzFN'
+SOCIAL_AUTH_TWITTER_SECRET = 'PtxbhnsiRSNOxrmuq3vAx5vLcwK4PIEPoQe671EWiG0QdedM90'
+SOCIAL_AUTH_FACEBOOK_KEY = '278355249316478'
+SOCIAL_AUTH_FACEBOOK_SECRET = 'a27bcfbc37d85395b89f3f5d32255b1f'
+SOCIAL_AUTH_FACEBOOK_SCOPE = ['email']
+SOCIAL_AUTH_FACEBOOK_PROFILE_EXTRA_PARAMS = {
+  'locale': 'ru_RU',
+  'fields': 'id, name, email, age_range'
+}
+
+SOCIAL_AUTH_GOOGLE_OAUTH2_KEY = '785354507796-keodt5mhp6vrhuof9ee4kaigkpg17gfc.apps.googleusercontent.com'
+SOCIAL_AUTH_GOOGLE_OAUTH2_SECRET = 'mGrTSf4h72JbGJ4DwgDkk9Pr'
+SOCIAL_AUTH_GOOGLE_OAUTH2_IGNORE_DEFAULT_SCOPE = True
+SOCIAL_AUTH_GOOGLE_OAUTH2_SCOPE = [
+    'https://www.googleapis.com/auth/userinfo.email',
+    'https://www.googleapis.com/auth/userinfo.profile'
+]

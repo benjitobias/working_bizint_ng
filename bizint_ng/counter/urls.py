@@ -14,4 +14,7 @@ urlpatterns = [
     path('graphs/', views.graphs, name='graphs'),
     path('populate-graphs/', views.populate_graphs, name='populate_graphs'),
     path('about/', views.about, name='about'),
+
+    path('settings/', views.settings, name='settings'),
+    path('settings/password/', views.password, name='password'),
 ]
