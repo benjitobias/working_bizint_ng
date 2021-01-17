@@ -169,7 +169,7 @@ SOCIAL_AUTH_FACEBOOK_KEY = '278355249316478'
 SOCIAL_AUTH_FACEBOOK_SECRET = 'a27bcfbc37d85395b89f3f5d32255b1f'
 SOCIAL_AUTH_FACEBOOK_SCOPE = ['email']
 SOCIAL_AUTH_FACEBOOK_PROFILE_EXTRA_PARAMS = {
-  'locale': 'ru_RU',
+  'locale': 'en_GB',
   'fields': 'id, name, email, age_range'
 }
 
