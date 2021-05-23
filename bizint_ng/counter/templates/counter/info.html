@@ -10,18 +10,26 @@
 
         {% get_obj_perms request.user for action as "action_perms" %}
         {% if "change_action" in action_perms %}
-        <form class="text-center" action="{% url 'counter:add' action.id %}" method="POST">
-        {% csrf_token%}
+
+        <div>
+        {% if collapse %}
+        <button class="btn btn-primary m-3" type="button" data-toggle="collapse" data-target="#collapseForm" aria-expanded="true" aria-controls="collapseForm">
+            {{action}} was recently updated. To add another click here.
+        </button>
+        </div>
+        {% endif %}
+        <div class="collapse {% if not collapse %}show{% endif %}" id="collapseForm">
+        <form class="text-center" action="{% url 'counter:info' action.id %}" method="POST">
+            {% csrf_token%}
             <div>
                 <input type="submit" value="+1">
             </div>
-            <div class="form-check mt-5">
-                <input class="form-check-input" type="checkbox" id="update_telegram" name="update_telegram">
-                <label class="form-check-label" for="update_telegram">Update Telegram?</label>
+            <div class="form-check mt-3">
+                {{ form.as_p }}
             </div>
-
-        {% endif %}
         </form>
+        </div>
+        {% endif %}
         <h3 style="padding-top: 75px;">Last updated: {{ action.get_latest.update_date }}</h3>
         <h4 style="padding-top: 75px;">Count stared: {{ action.creation_date }}</h4>
     </div>

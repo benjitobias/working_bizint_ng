@@ -35,6 +35,7 @@ class Count(models.Model):
     update_date = models.DateTimeField('Date updated', default=timezone.now)
     # TODO: remove update_week, calculate it from update date
     update_week = models.IntegerField('Week in year', default=timezone.now().isocalendar()[1])
+    note = models.CharField(max_length=200, default="")
 
     def __str__(self):
         return str(self.count)

@@ -9,6 +9,8 @@ from guardian.shortcuts import get_objects_for_user
 from .models import Action, Count
 from .telegram_bot import update_telegram_channel
 
+from .forms import CountForm
+
 
 class IndexView(generic.ListView):
     template_name = 'counter/index.html'
@@ -25,11 +27,36 @@ def index(request):
 @permission_required_or_403('counter.view_action', (Action, 'id', 'action_id'))
 def info(request, action_id):
     action = get_object_or_404(Action, pk=action_id)
-    print(request.GET)
+    form = CountForm()
+    collapse = False
+    if request.method == 'POST':
+        collapse = True
+        count_form = CountForm(request.POST)
+        note = count_form['note'].value()
+        action.count_set.create(count=action.get_count() + 1, note=note)
+
+    return render(request, 'counter/info.html', {'action': action, 'form': form, 'collapse': collapse})
+
+
+"""@permission_required_or_403('counter.change_action', (Action, 'id', 'action_id'))
+def add(request, action_id):
+    action = get_object_or_404(Action, pk=action_id)
+    if request.method == 'POST':
+        form = CountForm(request.POST)
+        print("----------------")
+        print(form['note'].value())
+        print(form['update_telegram'].value())
+        print("----------------")
+        #action.count_set.create(count=action.get_count() + 1)
+
+        #if request.POST.get('update_telegram'):
+         #   update_telegram_channel(action)
+
     return render(request, 'counter/info.html', {'action': action})
+"""
 
 
-@permission_required_or_403('counter.change_action', (Action, 'id', 'action_id'))
+"""@permission_required_or_403('counter.change_action', (Action, 'id', 'action_id'))
 def add(request, action_id):
     action = get_object_or_404(Action, pk=action_id)
     if request.method == 'POST':
@@ -39,7 +66,7 @@ def add(request, action_id):
             update_telegram_channel(action)
 
     return render(request, 'counter/info.html', {'action': action})
-
+"""
 
 # TODO: implement into info
 def populate_actions_chart(request):

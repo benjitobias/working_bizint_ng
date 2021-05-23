@@ -5,7 +5,7 @@ from .models import Action, Count
 
 
 class CountInline(admin.TabularInline):
-    fields = ['action', 'count', 'update_date']
+    fields = ['action', 'count', 'update_date', 'note']
     model = Count
     extra = 0
     max_num = 3
@@ -32,6 +32,9 @@ class ActionAdmin(GuardedModelAdmin):
         except AttributeError:
             latest_date = None
         return latest_date
+
+    def get_note(self, obj):
+        return "Note"
 
 
 admin.site.register(Action, ActionAdmin)
