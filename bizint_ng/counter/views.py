@@ -37,7 +37,9 @@ def info(request, action_id):
         hide_add = True
         count_form = CountForm(request.POST)
         note = count_form['note'].value()
-        action.count_set.create(count=action.get_count() + 1, note=note)
+        longitude = count_form['longitude'].value()
+        latitude = count_form['latitude'].value()
+        action.count_set.create(count=action.get_count() + 1, note=note, longitude=longitude, latitude=latitude)
 
     return render(request, 'counter/info.html', {'action': action, 'form': form, 'hide_add': hide_add, 'history': history})
 
