@@ -33,7 +33,6 @@ def info(request, action_id):
     hide_add = False
     current_count = action.get_count()
     history = action.count_set.filter(count__lte=current_count).filter(count__gte=current_count - 10).values('count', 'update_date', 'note')[::-1]
-    print(history)
     if request.method == 'POST':
         hide_add = True
         count_form = CountForm(request.POST)
