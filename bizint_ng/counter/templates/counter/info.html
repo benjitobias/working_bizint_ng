@@ -110,19 +110,35 @@
 
 <script>
 
-    $(function () {
+    getPosition();
+
+    function updatePosition() {
+        if ($("#id_ignore_location").is(":checked")) {
+            zeroPositionFields();
+        } else {
+            getPosition();
+        }
+    }
+
+    function zeroPositionFields() {
+        $("#id_longitude").val(0);
+        $("#id_latitude").val(0);
+    }
+
+    function getPosition() {
         if (navigator.geolocation) {
-            navigator.geolocation.getCurrentPosition(showPosition);
+            navigator.geolocation.getCurrentPosition(setPositionFields, zeroPositionFields);
         } else {
             alert('Geolocation not supported');
         }
-    });
+    }
 
-    function showPosition(position) {
+    function setPositionFields(position) {
         const latitude  = position.coords.latitude;
         const longitude = position.coords.longitude;
 
-        alert(`https://www.openstreetmap.org/#map=18/${latitude}/${longitude}`);
+        $("#id_longitude").val(longitude);
+        $("#id_latitude").val(latitude);
     }
 
     var action_history = 0;
