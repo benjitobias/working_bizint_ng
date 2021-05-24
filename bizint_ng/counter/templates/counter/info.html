@@ -30,8 +30,8 @@
         </form>
         </div>
         {% endif %}
-        <h3 style="padding-top: 75px;">Last updated: {{ action.get_latest.update_date }}</h3>
-        <h4 style="padding-top: 75px;">Count started: {{ action.creation_date }}</h4>
+        <h3 style="padding-top: 75px;">Last updated: {{ action.get_latest.update_date|date:"l d F Y - H:i" }}</h3>
+        <h4 style="padding-top: 75px;">Count started: {{ action.creation_date|date:"l d F Y" }}</h4>
     </div>
 
     <div id="accordion">
