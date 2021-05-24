@@ -5,7 +5,7 @@ from .models import Action, Count
 
 
 class CountInline(admin.TabularInline):
-    fields = ['action', 'count', 'update_date', 'note']
+    fields = ['action', 'count', 'update_date', 'note', 'longitude', 'latitude']
     model = Count
     extra = 0
     max_num = 3
