@@ -18,7 +18,7 @@
         </button>
         </div>
         {% endif %}
-        <div class="collapse {% if not collapse %}show{% endif %}" id="collapseForm">
+        <div class="collapse {% if not hide_add %}show{% endif %}" id="collapseForm">
         <form class="text-center" action="{% url 'counter:info' action.id %}" method="POST">
             {% csrf_token%}
             <div>
