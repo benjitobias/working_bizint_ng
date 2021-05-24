@@ -12,7 +12,7 @@
         {% if "change_action" in action_perms %}
 
         <div>
-        {% if collapse %}
+        {% if hide_add %}
         <button class="btn btn-primary m-3" type="button" data-toggle="collapse" data-target="#collapseForm" aria-expanded="true" aria-controls="collapseForm">
             {{action}} was recently updated. To add another click here.
         </button>
@@ -33,6 +33,126 @@
         <h3 style="padding-top: 75px;">Last updated: {{ action.get_latest.update_date }}</h3>
         <h4 style="padding-top: 75px;">Count stared: {{ action.creation_date }}</h4>
     </div>
+
+    <div id="accordion">
+        <div class="card">
+            <div class="card-header" id="headingOne">
+                <h5 class="mb-0">
+                <button class="btn btn-link collapsed" data-toggle="collapse" data-target="#collapseGraph" aria-expanded="true" aria-controls="collapseGraph">
+                    Graphs
+                </button>
+                </h5>
+            </div>
+            <div id="collapseGraph" class="collapse" aria-labelledby="headingGraph" data-parent="#accordion">
+                <div class="card-body">
+                    INSERT GRAPHS HERE
+                </div>
+            </div>
+        </div>
+
+        <div class="card">
+            <div class="card-header" id="headingTwo">
+                <h5 class="mb-0">
+                    <button class="btn btn-link collapsed" data-toggle="collapse" data-target="#collapseHistory" aria-expanded="false" aria-controls="collapseHistory">
+                        History
+                    </button>
+                </h5>
+            </div>
+            <div id="collapseHistory" class="collapse" aria-labelledby="headingHistory" data-parent="#accordion">
+                <div class="card-body">
+                    <form>
+                        <div class="input-group mb-3 form-group">
+                            <div class="input-group-prepend">
+                                <span class="input-group-text" id="basic-addon1">Last</span>
+                            </div>
+                            <input type="text" class="form-control" value="{{ action.get_count }}" id="history-last" aria-label="history-last" aria-describedby="history-last">
+                            <input type="text" class="form-control" value="{{ action.get_count|add:'-10' }}" id="history-first" aria-label="history-first" aria-describedby="history-first">
+
+                            <div class="input-group-append">
+                                <span class="input-group-text" id="basic-addon2">First</span>
+                            </div>
+                        </div>
+                        <button type="button" class="text-center mb-3 btn btn-primary" onclick="populateHistoryTable()">Show</button>
+                    </form>
+                    <div>
+                        <button type="button" class="text-center mb-3 btn btn-primary" onclick="populateHistoryTablePrev()"><</button>
+                        <button type="button" class="text-center mb-3 btn btn-primary" onclick="populateHistoryTableNext()">></button>
+                    </div>
+                       <div class="table-responsive">
+                            <table class="table" id="historyTable">
+                                <thead class="thead-dark">
+                                    <tr>
+                                        <th scope="col">#</th>
+                                        <th scope="col">Date updated</th>
+                                        <th scope="col">Note</th>
+                                    </tr>
+                                </thead>
+                                {% for count in history %}
+                                <tr>
+                                    <td>{{ count.count }}</td>
+                                    <td>{{ count.update_date }}</td>
+                                    <td>{{ count.note }}</td>
+                                </tr>
+                                {% endfor %}
+                            </table>
+                        </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
 </div>
 
+
+<script>
+    var action_history = 0;
+    function getHistory(first, last) {
+        $.ajax({
+            url: window.location.pathname + 'history/',
+            type: 'GET',
+            success: populateHistoryTableFromData,
+            data: {
+                'first': first,
+                'last': last
+            }
+        })
+    }
+
+    function populateHistoryTable() {
+        first = $("#history-first").val()
+        last = $("#history-last").val()
+        getHistory(first, last);
+    }
+
+    function populateHistoryTableNext() {
+        last = Number($("#history-first").val())
+        first = last - 10
+        $("#history-last").val(last)
+        $("#history-first").val(first)
+        getHistory(first, last);
+    }
+
+    function populateHistoryTablePrev() {
+        first = Number($("#history-last").val())
+        last = last + 10
+        $("#history-last").val(last)
+        $("#history-first").val(first)
+        getHistory(first, last);
+    }
+
+    function populateHistoryTableFromData(data) {
+        action_history = data;
+        $("#historyTable").empty()
+        var $th = $('<thead class="thead-dark"><tr><th scope="col">#</th><th scope="col">Date</th><th scope="col">Note</th></tr></thead>');//.appendTo('#historyTable');
+        data.forEach(function(count){
+            var $tr = $('<tr>').append(
+                $('<td>').text(count['count']),
+                $('<td>').text(new Date(count['update_date']).toLocaleString()),
+                $('<td>').text(count['note']),
+            ).appendTo($th);
+        })
+        $th.appendTo('#historyTable')
+    }
+
+</script>
 {% endblock %}}

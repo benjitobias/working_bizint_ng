@@ -4,7 +4,9 @@ from guardian.shortcuts import get_objects_for_user
 from guardian.decorators import permission_required_or_403
 from django.db.models import Count as CountFunction
 from django.http import JsonResponse
+from django.core import serializers
 from guardian.shortcuts import get_objects_for_user
+from calendar import month_abbr
 
 from .models import Action, Count
 from .telegram_bot import update_telegram_channel
@@ -28,14 +30,17 @@ def index(request):
 def info(request, action_id):
     action = get_object_or_404(Action, pk=action_id)
     form = CountForm()
-    collapse = False
+    hide_add = False
+    current_count = action.get_count()
+    history = action.count_set.filter(count__lte=current_count).filter(count__gte=current_count - 10).values('count', 'update_date', 'note')[::-1]
+    print(history)
     if request.method == 'POST':
-        collapse = True
+        hide_add = True
         count_form = CountForm(request.POST)
         note = count_form['note'].value()
         action.count_set.create(count=action.get_count() + 1, note=note)
 
-    return render(request, 'counter/info.html', {'action': action, 'form': form, 'collapse': collapse})
+    return render(request, 'counter/info.html', {'action': action, 'form': form, 'hide_add': hide_add, 'history': history})
 
 
 """@permission_required_or_403('counter.change_action', (Action, 'id', 'action_id'))
@@ -95,7 +100,6 @@ def about(request):
 
 
 def populate_graphs(request):
-    from calendar import month_abbr
     if request.user.is_authenticated:
         actions = [action.name for action in get_objects_for_user(request.user, 'counter.view_action')]
     else:
@@ -123,3 +127,28 @@ def populate_graphs(request):
         'datasets': datasets
     }
     return JsonResponse(data=data)
+
+
+@permission_required_or_403('counter.view_action', (Action, 'id', 'action_id'))
+def get_action_history(request, action_id):
+    action = get_object_or_404(Action, pk=action_id)
+    try:
+        first = request.GET['first']
+        last = request.GET['last']
+        if first > last:
+            first, last = last, first
+        history = action.count_set.filter(count__lte=last).filter(count__gte=first).values('count', 'update_date', 'note')
+        history = list(history)[::-1]
+        return JsonResponse(history, safe=False)
+    except KeyError:
+        return JsonResponse({"error": "missing parameters"})
+    except ValueError:
+        return JsonResponse({"error": "invalid parameters"})
+
+
+
+
+
+
+
+

@@ -14,4 +14,6 @@ urlpatterns = [
     path('graphs/', views.graphs, name='graphs'),
     path('populate-graphs/', views.populate_graphs, name='populate_graphs'),
     path('about/', views.about, name='about'),
+
+    path('<int:action_id>/history/', views.get_action_history, name='action-history'),
 ]
