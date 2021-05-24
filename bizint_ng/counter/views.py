@@ -159,7 +159,7 @@ def populate_action_graph(request, action_id):
     action = Action.objects.get(pk=action_id)
     action_data['label'] = action.name
     for month in range(1, 13):
-        action_count = action.count_set.filter(update_date__year=2020, update_date__month=month).count()
+        action_count = action.count_set.filter(update_date__year=2021, update_date__month=month).count()
         action_data['data'].append(action_count)
     datasets.append(action_data)
 
