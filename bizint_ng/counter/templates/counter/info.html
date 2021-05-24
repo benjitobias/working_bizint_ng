@@ -109,6 +109,22 @@
 
 
 <script>
+
+    $(function () {
+        if (navigator.geolocation) {
+            navigator.geolocation.getCurrentPosition(showPosition);
+        } else {
+            alert('Geolocation not supported');
+        }
+    });
+
+    function showPosition(position) {
+        const latitude  = position.coords.latitude;
+        const longitude = position.coords.longitude;
+
+        alert(`https://www.openstreetmap.org/#map=18/${latitude}/${longitude}`);
+    }
+
     var action_history = 0;
     function getHistory(first, last) {
         $.ajax({
