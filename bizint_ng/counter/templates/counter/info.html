@@ -46,6 +46,12 @@
             <div id="collapseGraph" class="collapse" aria-labelledby="headingGraph" data-parent="#accordion">
                 <div class="card-body">
                     INSERT GRAPHS HERE
+
+                    <div class="container text-center" style="width: 75%;">
+                        <canvas class="action-chart" id="action-bar-chart" data-url="populate-action-graph"></canvas>
+                        <div class="dropdown-divider"></div>
+                        <canvas class="action-chart" id="action-line-chart" data-url="populate-action-graph"></canvas>
+                    </div>
                 </div>
             </div>
         </div>
@@ -154,5 +160,41 @@
         $th.appendTo('#historyTable')
     }
 
+
+    var $actionChart = $("#action-bar-chart");
+        graph_data = "";
+        options = {
+            responsive: true,
+            plugins: {
+                labels: {
+                    render: 'value'
+                }
+            }
+        }
+
+        $(function () {
+        $.ajax({
+            url: $actionChart.data("url"),
+            success: function (data) {
+                  graph_data = data;
+                  populateGraph('action-bar-chart', 'bar')
+                  populateGraph('action-line-chart', 'line')
+
+            }
+          });
+        });
+
+        function populateGraph(graphId, graphType) {
+            var graph = document.getElementById(graphId);
+            var ctx = graph.getContext("2d");
+            new Chart(ctx, {
+                type: graphType,
+                data: {
+                  labels: graph_data.labels,
+                  datasets: graph_data.datasets,
+                },
+                options: options
+            });
+        }
 </script>
 {% endblock %}}

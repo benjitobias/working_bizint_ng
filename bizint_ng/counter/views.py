@@ -146,6 +146,28 @@ def get_action_history(request, action_id):
         return JsonResponse({"error": "invalid parameters"})
 
 
+@permission_required_or_403('counter.view_action', (Action, 'id', 'action_id'))
+def populate_action_graph(request, action_id):
+    data = dict()
+    data['labels'] = month_abbr[1:]
+
+    datasets = list()
+
+    action_data = dict()
+    action_data['data'] = list()
+    action_data['fill'] = False
+    action = Action.objects.get(pk=action_id)
+    action_data['label'] = action.name
+    for month in range(1, 13):
+        action_count = action.count_set.filter(update_date__year=2020, update_date__month=month).count()
+        action_data['data'].append(action_count)
+    datasets.append(action_data)
+
+    data = {
+        'labels': month_abbr[1:],
+        'datasets': datasets
+    }
+    return JsonResponse(data=data)
 
 
 
