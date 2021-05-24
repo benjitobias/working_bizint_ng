@@ -36,6 +36,8 @@ class Count(models.Model):
     # TODO: remove update_week, calculate it from update date
     update_week = models.IntegerField('Week in year', default=timezone.now().isocalendar()[1])
     note = models.CharField(max_length=200, default="")
+    longitude = models.FloatField(default=0)
+    latitude = models.FloatField(default=0)
 
     def __str__(self):
         return str(self.count)
