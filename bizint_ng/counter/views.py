@@ -32,7 +32,8 @@ def info(request, action_id):
     form = CountForm()
     hide_add = False
     current_count = action.get_count()
-    history = action.count_set.filter(count__lte=current_count).filter(count__gte=current_count - 10).values('count', 'update_date', 'note')[::-1]
+    history = action.count_set.filter(count__lte=current_count).filter(count__gte=current_count - 10).values(
+        'count', 'update_date', 'note', 'longitude', 'latitude')[::-1]
     if request.method == 'POST':
         hide_add = True
         count_form = CountForm(request.POST)
@@ -138,8 +139,9 @@ def get_action_history(request, action_id):
         last = request.GET['last']
         if first > last:
             first, last = last, first
-        history = action.count_set.filter(count__lte=last).filter(count__gte=first).values('count', 'update_date', 'note')
+        history = action.count_set.filter(count__lte=last).filter(count__gte=first).values('count', 'update_date', 'note', 'longitude', 'latitude')
         history = list(history)[::-1]
+        print(history)
         return JsonResponse(history, safe=False)
     except KeyError:
         return JsonResponse({"error": "missing parameters"})

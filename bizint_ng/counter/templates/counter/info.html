@@ -88,6 +88,7 @@
                                     <tr>
                                         <th scope="col">#</th>
                                         <th scope="col">Date updated</th>
+                                        <th scope="col">Location</th>
                                         <th scope="col">Note</th>
                                     </tr>
                                 </thead>
@@ -95,6 +96,7 @@
                                 <tr>
                                     <td>{{ count.count }}</td>
                                     <td>{{ count.update_date }}</td>
+                                    <td><a href="https://www.openstreetmap.org/#map=18/{{ count.latitude }}/{{ count.longitude }}">{{ count.longitude }}, {{ count.latitude }}</a></td>
                                     <td>{{ count.note }}</td>
                                 </tr>
                                 {% endfor %}
@@ -179,11 +181,17 @@
     function populateHistoryTableFromData(data) {
         action_history = data;
         $("#historyTable").empty()
-        var $th = $('<thead class="thead-dark"><tr><th scope="col">#</th><th scope="col">Date</th><th scope="col">Note</th></tr></thead>');//.appendTo('#historyTable');
+        var $th = $('<thead class="thead-dark"><tr><th scope="col">#</th><th scope="col">Date</th><th scope="col">Location</th><th scope="col">Note</th></tr></thead>');//.appendTo('#historyTable');
         data.forEach(function(count){
+            longitude = count['longitude'];
+            latitude = count['latitude'];
+            location_link = `https://www.openstreetmap.org/#map=18/${latitude}/${longitude}`;
+            location_string = `${longitude}, ${latitude}`;
+            console.log(location_link);
             var $tr = $('<tr>').append(
                 $('<td>').text(count['count']),
                 $('<td>').text(new Date(count['update_date']).toLocaleString()),
+                `<td><a href="${location_link}">${location_string}</a></td>`,
                 $('<td>').text(count['note']),
             ).appendTo($th);
         })
