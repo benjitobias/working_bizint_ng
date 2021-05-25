@@ -95,7 +95,7 @@
                                 {% for count in history %}
                                 <tr>
                                     <td>{{ count.count }}</td>
-                                    <td>{{ count.update_date }}</td>
+                                    <td>{{ count.update_date|date:"l d F Y - H:i" }}</td>
                                     <td><a href="https://www.openstreetmap.org/#map=18/{{ count.latitude }}/{{ count.longitude }}">{{ count.longitude }}, {{ count.latitude }}</a></td>
                                     <td>{{ count.note }}</td>
                                 </tr>
@@ -187,15 +187,29 @@
             latitude = count['latitude'];
             location_link = `https://www.openstreetmap.org/#map=18/${latitude}/${longitude}`;
             location_string = `${longitude}, ${latitude}`;
-            console.log(location_link);
             var $tr = $('<tr>').append(
                 $('<td>').text(count['count']),
-                $('<td>').text(new Date(count['update_date']).toLocaleString()),
+                $('<td>').text(formatDate(new Date(count['update_date'])).toLocaleString()),
                 `<td><a href="${location_link}">${location_string}</a></td>`,
                 $('<td>').text(count['note']),
             ).appendTo($th);
         })
         $th.appendTo('#historyTable')
+    }
+
+    function formatDate(date) {
+       const months = ['January', 'February', 'March', 'April', 'May', 'June', 'July', 'August', 'September', 'October', 'November', 'December'];
+       const days = ['Sunday', 'Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday']
+
+       day = days[date.getDay()];
+       month_day = date.getDate();
+       month = months[date.getMonth()];
+       year = date.getFullYear();
+       minute = ("0" + date.getMinutes()).slice(-2);
+       hour = ("0" + date.getHours()).slice(-2);
+
+       formatted_date = `${day} ${month_day} ${month} ${year} - ${minute}:${hour}`;
+       return formatted_date;
     }
 
 
