@@ -1,4 +1,4 @@
-from django.shortcuts import render, get_object_or_404
+from django.shortcuts import render, get_object_or_404, redirect
 from django.views import generic
 from guardian.shortcuts import get_objects_for_user
 from guardian.decorators import permission_required_or_403
@@ -7,6 +7,9 @@ from django.http import JsonResponse
 from django.core import serializers
 from guardian.shortcuts import get_objects_for_user
 from calendar import month_abbr
+from django.utils import timezone
+from django.urls import reverse
+
 
 from .models import Action, Count
 from .telegram_bot import update_telegram_channel
@@ -34,13 +37,20 @@ def info(request, action_id):
     current_count = action.get_count()
     history = action.count_set.filter(count__lte=current_count).filter(count__gte=current_count - 10).values(
         'count', 'update_date', 'note', 'longitude', 'latitude')[::-1]
-    if request.method == 'POST':
+
+    latest_update_time = action.get_latest().update_date
+    now = timezone.now()
+
+    if (now - latest_update_time).seconds < 60:
         hide_add = True
+
+    if request.method == 'POST':
         count_form = CountForm(request.POST)
         note = count_form['note'].value()
         longitude = count_form['longitude'].value()
         latitude = count_form['latitude'].value()
         action.count_set.create(count=action.get_count() + 1, note=note, longitude=longitude, latitude=latitude)
+        return redirect(reverse('counter:info', args=(action_id,)))
 
     return render(request, 'counter/info.html', {'action': action, 'form': form, 'hide_add': hide_add, 'history': history})
 
@@ -49,17 +59,20 @@ def info(request, action_id):
 def add(request, action_id):
     action = get_object_or_404(Action, pk=action_id)
     if request.method == 'POST':
-        form = CountForm(request.POST)
-        print("----------------")
-        print(form['note'].value())
-        print(form['update_telegram'].value())
-        print("----------------")
+        count_form = CountForm(request.POST)
+        note = count_form['note'].value()
+        longitude = count_form['longitude'].value()
+        latitude = count_form['latitude'].value()
+        action.count_set.create(count=action.get_count() + 1, note=note, longitude=longitude, latitude=latitude)
+        print("redirect")
+        print(reverse('counter:info', args=(action_id,)))
+        return redirect(reverse('counter:info', args=(action_id,)))
         #action.count_set.create(count=action.get_count() + 1)
 
         #if request.POST.get('update_telegram'):
          #   update_telegram_channel(action)
 
-    return render(request, 'counter/info.html', {'action': action})
+    # return render(request, 'counter/info.html', {'action': action})
 """
 
 

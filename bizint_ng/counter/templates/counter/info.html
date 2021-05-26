@@ -22,7 +22,9 @@
         <form class="text-center" action="{% url 'counter:info' action.id %}" method="POST">
             {% csrf_token%}
             <div>
-                <input type="submit" value="+1">
+                <!--button type="submit" value="+1"-->
+                <button type="submit" class="text-center mb-3 btn btn-primary">+1</button>
+
             </div>
             <div class="form-check mt-3">
                 {{ form.as_p }}
