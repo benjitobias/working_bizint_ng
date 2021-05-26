@@ -112,7 +112,9 @@
 
 <script>
 
+    {% if "change_action" in action_perms %}
     getPosition();
+    {% endif %}
 
     function updatePosition() {
         if ($("#id_ignore_location").is(":checked")) {
