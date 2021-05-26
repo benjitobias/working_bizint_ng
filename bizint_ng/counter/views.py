@@ -50,6 +50,10 @@ def info(request, action_id):
         longitude = count_form['longitude'].value()
         latitude = count_form['latitude'].value()
         action.count_set.create(count=action.get_count() + 1, note=note, longitude=longitude, latitude=latitude)
+
+        if request.POST.get('update_telegram'):
+           update_telegram_channel(action)
+
         return redirect(reverse('counter:info', args=(action_id,)))
 
     return render(request, 'counter/info.html', {'action': action, 'form': form, 'hide_add': hide_add, 'history': history})
