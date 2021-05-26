@@ -98,7 +98,7 @@
                                 <tr>
                                     <td>{{ count.count }}</td>
                                     <td>{{ count.update_date|date:"l d F Y - H:i" }}</td>
-                                    <td><a href="https://www.openstreetmap.org/#map=18/{{ count.latitude }}/{{ count.longitude }}">{{ count.longitude }}, {{ count.latitude }}</a></td>
+                                    <td><a href="https://www.openstreetmap.org/?mlat={{ count.latitude }}&mlon={{ count.longitude }}#map=18/{{ count.latitude }}/{{ count.longitude }}">{{ count.latitude }}, {{ count.longitude }}</a></td>
                                     <td>{{ count.note }}</td>
                                 </tr>
                                 {% endfor %}
@@ -189,7 +189,7 @@
         data.forEach(function(count){
             longitude = count['longitude'];
             latitude = count['latitude'];
-            location_link = `https://www.openstreetmap.org/#map=18/${latitude}/${longitude}`;
+            location_link = `https://www.openstreetmap.org/?mlat=${latitude}&mlon=${longitude}#map=18/${latitude}/${longitude}`;
             location_string = `${longitude}, ${latitude}`;
             var $tr = $('<tr>').append(
                 $('<td>').text(count['count']),
