@@ -4,7 +4,7 @@
 {% block content %}
 
 <div class="container text-center" style="width: 75%;">
-    <h3 style="border-bottom: 1px solid #ccc">2021</h3>
+    <h3 id="current-year" style="border-bottom: 1px solid #ccc">2021</h3>
     <canvas class="actions-chart" id="actions-bar-chart" data-url="{% url 'counter:populate_graphs' %}"></canvas>
     <div class="dropdown-divider"></div>
     <canvas class="actions-chart" id="actions-line-chart" data-url="{% url 'counter:populate_graphs' %}"></canvas>
@@ -15,6 +15,9 @@
 <script>
 
     var $actionsChart = $("#actions-bar-chart");
+    var $currentYear = new Date().getFullYear();
+    var $currentMonth = new Date().getMonth() + 1;
+    $('#current-year').text($currentYear);
     graph_data = "";
     options = {
         responsive: true,
@@ -28,6 +31,11 @@
     $(function () {
       $.ajax({
         url: $actionsChart.data("url"),
+        type: 'GET',
+        data: {
+            'currentYear': $currentYear,
+            'currentMonth': $currentMonth
+        },
         success: function (data) {
               graph_data = data;
               populateGraph('actions-bar-chart', 'bar')
