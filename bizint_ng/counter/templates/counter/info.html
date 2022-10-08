@@ -37,7 +37,7 @@
     </div>
 
     <div id="accordion">
-        <div class="card">
+        <div class="card info-card">
             <div class="card-header" id="headingOne">
                 <h5 class="mb-0">
                 <button class="btn btn-link collapsed" data-toggle="collapse" data-target="#collapseGraph" aria-expanded="true" aria-controls="collapseGraph">
@@ -56,7 +56,7 @@
             </div>
         </div>
 
-        <div class="card">
+        <div class="card info-card">
             <div class="card-header" id="headingTwo">
                 <h5 class="mb-0">
                     <button class="btn btn-link collapsed" data-toggle="collapse" data-target="#collapseHistory" aria-expanded="false" aria-controls="collapseHistory">
@@ -96,10 +96,10 @@
                                 </thead>
                                 {% for count in history %}
                                 <tr>
-                                    <td>{{ count.count }}</td>
-                                    <td>{{ count.update_date|date:"l d F Y - H:i" }}</td>
-                                    <td><a href="https://www.openstreetmap.org/?mlat={{ count.latitude }}&mlon={{ count.longitude }}#map=18/{{ count.latitude }}/{{ count.longitude }}">{{ count.latitude }}, {{ count.longitude }}</a></td>
-                                    <td>{{ count.note }}</td>
+                                    <td class="history-td">{{ count.count }}</td>
+                                    <td class="history-td">{{ count.update_date|date:"l d F Y - H:i" }}</td>
+                                    <td class="history-td"><a href="https://www.openstreetmap.org/?mlat={{ count.latitude }}&mlon={{ count.longitude }}#map=18/{{ count.latitude }}/{{ count.longitude }}">{{ count.latitude }}, {{ count.longitude }}</a></td>
+                                    <td class="history-td">{{ count.note }}</td>
                                 </tr>
                                 {% endfor %}
                             </table>
@@ -192,10 +192,10 @@
             location_link = `https://www.openstreetmap.org/?mlat=${latitude}&mlon=${longitude}#map=18/${latitude}/${longitude}`;
             location_string = `${longitude}, ${latitude}`;
             var $tr = $('<tr>').append(
-                $('<td>').text(count['count']),
-                $('<td>').text(formatDate(new Date(count['update_date'])).toLocaleString()),
-                `<td><a href="${location_link}">${location_string}</a></td>`,
-                $('<td>').text(count['note']),
+                $('<td class="history-td">').text(count['count']),
+                $('<td class="history-td">').text(formatDate(new Date(count['update_date'])).toLocaleString()),
+                `<td class="history-td"><a href="${location_link}">${location_string}</a></td>`,
+                $('<td class="history-td">').text(count['note']),
             ).appendTo($th);
         })
         $th.appendTo('#historyTable')
@@ -223,7 +223,8 @@
             responsive: true,
             plugins: {
                 labels: {
-                    render: 'value'
+                    render: 'value',
+                    fontColor: '#bd93f9',
                 }
             }
         }
