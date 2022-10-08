@@ -84,10 +84,11 @@ DATABASES = {
         'NAME': 'bizint_ng',
         'USER': 'bizint_ng',
         'PASSWORD': 'Aa123123',
-        'HOST': 'localhost',
+        'HOST': 'nuc.bizint.xyz',
         'PORT': '',
     }
 }
+
 
 
 # Password validation
