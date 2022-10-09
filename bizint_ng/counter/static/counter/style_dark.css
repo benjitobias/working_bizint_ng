@@ -19,6 +19,13 @@ body {
     color: #bd93f9;
 }
 
+.action-card a {
+    color: #fff;
+}
+.navbar a {
+    color: #fff;
+}
+
 .login-form {
     width: 340px;
     margin: 50px auto;
