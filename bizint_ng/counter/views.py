@@ -197,3 +197,23 @@ def populate_action_graph(request, action_id):
         'datasets': datasets
     }
     return JsonResponse(data=data)
+
+
+@permission_required_or_403('counter.view_action', (Action, 'id', 'action_id'))
+def delete_action_instance(request, action_id):
+    action = get_object_or_404(Action, pk=action_id)
+    try:
+        print('shit0delete')
+        instance = request.POST['instance']
+        to_delete = action.count_set.get(count=instance)
+        print(to_delete)
+        to_delete.delete()
+        for newer in action.count_set.filter(count__gt=instance):
+            newer.count = newer.count - 1
+            newer.save()
+        return JsonResponse({"success": rf"{action} - {instance} deleted"})
+
+    except KeyError:
+        return JsonResponse({"error": "missing parameters"})
+    except ValueError:
+        return JsonResponse({"error": "invalid parameters"})

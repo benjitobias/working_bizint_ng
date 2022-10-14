@@ -92,14 +92,16 @@
                                         <th scope="col">Date updated</th>
                                         <th scope="col">Location</th>
                                         <th scope="col">Note</th>
+                                        <th scope="col">Edit</th>
                                     </tr>
                                 </thead>
                                 {% for count in history %}
-                                <tr>
+                                <tr id="history-row-{{ count.count }}">
                                     <td class="history-td">{{ count.count }}</td>
                                     <td class="history-td">{{ count.update_date|date:"l d F Y - H:i" }}</td>
                                     <td class="history-td"><a href="https://www.openstreetmap.org/?mlat={{ count.latitude }}&mlon={{ count.longitude }}#map=18/{{ count.latitude }}/{{ count.longitude }}">{{ count.latitude }}, {{ count.longitude }}</a></td>
                                     <td class="history-td">{{ count.note }}</td>
+                                    <td class="history-td"><button disabled type="button" id="edit-{{ action.id }}-{{ count.count }}" class="edit-button text-center mb-3 btn btn-warning">Edit</button> <button type="button" id="delete-{{ action.id }}-{{ count.count }}" class="delete-button text-center mb-3 btn btn-danger">Delete</button></td>
                                 </tr>
                                 {% endfor %}
                             </table>
@@ -185,7 +187,7 @@
     function populateHistoryTableFromData(data) {
         action_history = data;
         $("#historyTable").empty()
-        var $th = $('<thead class="thead-dark"><tr><th scope="col">#</th><th scope="col">Date</th><th scope="col">Location</th><th scope="col">Note</th></tr></thead>');//.appendTo('#historyTable');
+        var $th = $('<thead class="thead-dark"><tr><th scope="col">#</th><th scope="col">Date</th><th scope="col">Location</th><th scope="col">Note</th><th scope="col">Edit</th></tr></thead>');//.appendTo('#historyTable');
         data.forEach(function(count){
             longitude = count['longitude'];
             latitude = count['latitude'];
@@ -253,5 +255,34 @@
                 options: options
             });
         }
+
+        function editAction(button) {
+            alert('edit function');
+        }
+
+        function deleteAction(button) {
+            //alert(button.attr('id'));
+            //var action_id = button.attr(id).split[1]
+            var instance = button.attr('id').split('-')[2];
+            $.ajax({
+                url: window.location.pathname + 'delete-action-instance/',
+                type: 'POST',
+                success: location.reload(),
+                data: {
+                    'instance': instance,
+                    'csrfmiddlewaretoken': '{{ csrf_token }}'
+                }
+            })
+        }
+
+        $('.edit-button').click(function() {
+            editAction('edit');
+        });
+
+        $('.delete-button').click(function() {
+        //alert($(this).attr("id"));
+            deleteAction($(this));
+        });
+
 </script>
 {% endblock %}}

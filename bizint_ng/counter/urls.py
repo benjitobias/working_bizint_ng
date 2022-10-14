@@ -17,4 +17,6 @@ urlpatterns = [
 
     path('<int:action_id>/history/', views.get_action_history, name='action-history'),
     path('<int:action_id>/populate-action-graph/', views.populate_action_graph, name='populate-action-graph'),
+
+    path('<int:action_id>/delete-action-instance/', views.delete_action_instance, name='delete-action-instance'),
 ]
