@@ -52,11 +52,12 @@ def info(request, action_id):
         action.count_set.create(count=action.get_count() + 1, note=note, longitude=longitude, latitude=latitude)
 
         if request.POST.get('update_telegram'):
-           update_telegram_channel(action)
+            update_telegram_channel(action)
 
         return redirect(reverse('counter:info', args=(action_id,)))
 
-    return render(request, 'counter/info.html', {'action': action, 'form': form, 'hide_add': hide_add, 'history': history})
+    return render(request, 'counter/info.html',
+                  {'action': action, 'form': form, 'hide_add': hide_add, 'history': history})
 
 
 """@permission_required_or_403('counter.change_action', (Action, 'id', 'action_id'))
@@ -79,7 +80,6 @@ def add(request, action_id):
     # return render(request, 'counter/info.html', {'action': action})
 """
 
-
 """@permission_required_or_403('counter.change_action', (Action, 'id', 'action_id'))
 def add(request, action_id):
     action = get_object_or_404(Action, pk=action_id)
@@ -91,6 +91,7 @@ def add(request, action_id):
 
     return render(request, 'counter/info.html', {'action': action})
 """
+
 
 # TODO: implement into info
 def populate_actions_chart(request):
@@ -162,7 +163,9 @@ def get_action_history(request, action_id):
         last = request.GET['last']
         if first > last:
             first, last = last, first
-        history = action.count_set.filter(count__lte=last).filter(count__gte=first).values('count', 'update_date', 'note', 'longitude', 'latitude')
+        history = action.count_set.filter(count__lte=last).filter(count__gte=first).values('count', 'update_date',
+                                                                                           'note', 'longitude',
+                                                                                           'latitude')
         history = list(history)[::-1]
         print(history)
         return JsonResponse(history, safe=False)
@@ -194,9 +197,3 @@ def populate_action_graph(request, action_id):
         'datasets': datasets
     }
     return JsonResponse(data=data)
-
-
-
-
-
-
