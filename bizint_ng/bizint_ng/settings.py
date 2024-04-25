@@ -25,7 +25,7 @@ SECRET_KEY = 'dxx$+evgfafb%*7^m&gw&6su)ze^wa(&dbsce(99i-9#251b=2'
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-ALLOWED_HOSTS = []
+ALLOWED_HOSTS = ["*"]
 
 
 # Application definition
@@ -84,8 +84,8 @@ DATABASES = {
         'NAME': 'bizint_ng',
         'USER': 'bizint_ng',
         'PASSWORD': 'Aa123123',
-        'HOST': 'localhost',
-        'PORT': '',
+        'HOST': 'bizint_db',
+        'PORT': 5432,
     }
 }
 
