@@ -8,7 +8,6 @@ services:
     restart: always
     volumes:
       - postgres_data:/var/lib/postgresql/data/
-   #   - static_files:/bizint_ng/bizint_ng/static
     ports:
       - "5432:5432"
         #network_mode: 'host'
@@ -22,22 +21,24 @@ services:
       context: .
       dockerfile: Dockerfile.prod
     command: gunicorn bizint_ng.wsgi:application --bind 0.0.0.0:8000
-    # volumes:
-    #   - ./bizint_ng:/bizint_ng
     expose:
       - 8000
     depends_on:
       - bizint_db
+    volumes:
+      - static_files:/app/static
   nginx:
+    container_name: bizint_nginx
     build: ./nginx
     ports:
       - 80:80
     depends_on:
       - bizint_web
-    #volumes: static_files:/bizint_ng/bizint_ng/static
+    volumes:
+      - static_files:/app/static
 
 
 volumes:
   postgres_data:
-  #static_files:
+  static_files:
 
