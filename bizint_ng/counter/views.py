@@ -9,7 +9,7 @@ from guardian.shortcuts import get_objects_for_user
 from calendar import month_abbr
 from django.utils import timezone
 from django.urls import reverse
-
+from datetime import date
 
 from .models import Action, Count
 from .telegram_bot import update_telegram_channel
@@ -119,6 +119,12 @@ def about(request):
 
 
 def populate_graphs(request):
+    try:
+        currentYear = int(request.GET['currentYear'])
+        currentMonth = int(request.GET['currentMonth'])
+    except (KeyError, ValueError):
+        currentYear = date.today().year
+        currentMonth = date.today().month
     if request.user.is_authenticated:
         actions = [action.name for action in get_objects_for_user(request.user, 'counter.view_action')]
     else:
@@ -135,8 +141,8 @@ def populate_graphs(request):
         action_data['fill'] = False
         action = Action.objects.get(name=action_name)
         action_data['label'] = action_name
-        for month in range(1, 13):
-            action_count = action.count_set.filter(update_date__year=2021, update_date__month=month).count()
+        for month in range(1, currentMonth + 1):
+            action_count = action.count_set.filter(update_date__year=currentYear, update_date__month=month).count()
             action_data['data'].append(action_count)
 
         datasets.append(action_data)

@@ -1,7 +1,9 @@
 from django.contrib import admin
 from guardian.admin import GuardedModelAdmin
 
-from .models import Action, Count
+from django.utils.html import format_html
+
+from .models import Action, Count, Location
 
 
 class CountInline(admin.TabularInline):
@@ -37,4 +39,13 @@ class ActionAdmin(GuardedModelAdmin):
         return "Note"
 
 
+class LocationAdmin(GuardedModelAdmin):
+    list_display = ['name', 'owner', 'get_coordinates_with_link']
+
+    def get_coordinates_with_link(self, location):
+        return format_html("<a  href='{link}'>{coordinates}</a>", link=location.link, coordinates=location.coordinates)
+
+    get_coordinates_with_link.short_description = 'Coordinates'
+
 admin.site.register(Action, ActionAdmin)
+admin.site.register(Location, LocationAdmin)

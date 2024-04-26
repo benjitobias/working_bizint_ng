@@ -41,3 +41,21 @@ class Count(models.Model):
 
     def __str__(self):
         return str(self.count)
+
+
+class Location(models.Model):
+    owner = models.ForeignKey(User, on_delete=models.CASCADE, default=1)
+    name = models.CharField(max_length=200)
+    longitude = models.FloatField()
+    latitude = models.FloatField()
+
+    coordinates = models.CharField(max_length=30, default="")
+    link = models.CharField(max_length=100,  default="")
+
+    def __str__(self):
+        return self.name
+
+    def save(self, *args, **kwargs):
+        self.coordinates = "{latitude}, {longitude}".format(latitude=self.latitude, longitude=self.longitude)
+        self.link = "https://www.openstreetmap.org/?mlat={latitude}&mlon={longitude}#map=18/{latitude}/{longitude}".format(latitude=self.latitude, longitude=self.longitude)
+        super().save(*args, **kwargs)

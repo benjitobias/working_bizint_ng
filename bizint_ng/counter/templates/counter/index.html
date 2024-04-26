@@ -7,7 +7,7 @@
 <div class="card-columns">
     {% if actions %}
     {% for action in actions %}
-    <div class="card bg-light">
+    <div class="card action-card">
         <div class="card-body text-center">
             <a class="card-text stretched-link text-decoration-none" href="{% url 'counter:info' action.id %}">{{ action.name }}</a>
             <p>{{ action.get_count }}</p>
@@ -15,7 +15,7 @@
     </div>
     {% endfor %}
     {% else %}
-    <div class="card bg-light">
+    <div class="card action-card">
     <div class="card-body text-center">
       <p class="card-text">No actions</p>
     </div>
@@ -40,7 +40,6 @@
         success: function (data) {
 
           var ctx = $actionsChart[0].getContext("2d");
-
           new Chart(ctx, {
             type: 'doughnut',
             data: {
@@ -55,13 +54,19 @@
                 plugins: {
                     labels: [{
                         render: 'label',
-                        fontColor: '#000',
+                        fontColor: '#bd93f9',
                         position: 'outside'
                         },
                         {
                             render: 'value'
                         }]
-                }
+                },
+                legend: {
+                    display: true,
+                    labels: {
+                            fontColor: '#bd93f9',
+                        }
+                    }
             }
           }).update();
 
