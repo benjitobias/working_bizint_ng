@@ -1,0 +1,33 @@
+# Use postgres/example user/password credentials
+version: '3.1'
+
+services:
+  bizint_db:
+    image: postgres
+    container_name: bizint_db
+    restart: always
+    volumes:
+      - postgres_data:/var/lib/postgresql/data/
+    ports:
+      - "5432:5432"
+        #network_mode: 'host'
+    environment:
+      POSTGRES_PASSWORD: Aa123123
+      POSTGRES_USER: bizint_ng
+      POSTGRES_DB: bizint_ng
+  bizint_web:
+    container_name: bizint_web
+    build:
+      context: .
+      dockerfile: Dockerfile.prod
+    command: python manage.py runserver 0.0.0.0:8000
+    # volumes:
+    #   - ./bizint_ng:/bizint_ng
+    ports:
+      - 8000:8000
+    depends_on:
+      - bizint_db
+
+volumes:
+  postgres_data:
+
