@@ -7,7 +7,7 @@ services:
     container_name: bizint_db
     restart: always
     volumes:
-      - postgres_data:/var/lib/postgresql/datb/
+      - postgres_data:/var/lib/postgresql/data/
     ports:
       - "5432:5432"
         #network_mode: 'host'
