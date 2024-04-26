@@ -9,6 +9,8 @@ sudo docker compose run bizint_web
 ## Delete all volumes with name <name>
 sudo docker volume ls | cut -d' ' -f6 | grep <name> | xargs sudo docker volume rm {}
 
+## Run containers from other compose file
+sudo docker compose -f docker-compose.prod.yml up 
 
 # Setup
 
