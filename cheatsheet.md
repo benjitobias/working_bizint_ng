@@ -18,6 +18,9 @@ sudo docker compose -f docker-compose.prod.yml up
 ### Run migrate
 sudo docker exec bizint_web python manage.py migrate --noinput
 
+### Load static files in prod
+sudo docker exec bizint_web python manage.py collectstatic
+
 ### Flush DB
 sudo docker exec bizint_web python manage.py flush --no-input
 
