@@ -8,6 +8,7 @@ services:
     restart: always
     volumes:
       - postgres_data:/var/lib/postgresql/data/
+   #   - static_files:/bizint_ng/bizint_ng/static
     ports:
       - "5432:5432"
         #network_mode: 'host'
@@ -33,7 +34,10 @@ services:
       - 80:80
     depends_on:
       - bizint_web
+    #volumes: static_files:/bizint_ng/bizint_ng/static
+
 
 volumes:
   postgres_data:
+  #static_files:
 
