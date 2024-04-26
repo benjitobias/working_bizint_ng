@@ -24,4 +24,8 @@ sudo docker exec bizint_web python manage.py collectstatic
 ### Flush DB
 sudo docker exec bizint_web python manage.py flush --no-input
 
+# Django
+
+### Create superuser
+sudo docker exec -it bizint_web python manage.py createsuperuser
 
