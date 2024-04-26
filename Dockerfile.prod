@@ -7,6 +7,7 @@ WORKDIR /bizint_ng
 
 COPY bizint_ng/requirements.txt ./
 RUN pip install -r requirements.txt
+RUN pip install gunicorn==21.2.0
 
 COPY bizint_ng ./
 
