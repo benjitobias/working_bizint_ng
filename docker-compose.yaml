@@ -26,14 +26,6 @@ services:
     depends_on:
       - bizint_db
 
-
-
 volumes:
   postgres_data:
 
-
-  #adminer:
-  #  image: adminer
-  #  restart: always
-  #  ports:
-  #    - 5432:5432
