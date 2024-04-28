@@ -24,10 +24,9 @@
             <div>
                 <!--button type="submit" value="+1"-->
                 <button type="submit" id="add_button" class="text-center mb-3 btn btn-primary">+1</button>
-
-            </div>
-            <div class="form-check mt-3">
-                {{ form.as_p }}
+                <div class="form-check mt-3">
+                    {{ form.as_p }}
+                </div>
             </div>
         </form>
         </div>
@@ -253,5 +252,15 @@
                 options: options
             });
         }
+
+    var maxDate = new Date();
+    maxDate.setHours(23, 59, 59);
+    flatpickr("#id_datetime", {
+        enableTime: true,
+        dateFormat: "Y-m-d H:i",
+        maxDate: maxDate.toISOString(),
+        defaultDate: new Date().toISOString(),
+        time_24hr: true
+    });
 </script>
 {% endblock %}}
