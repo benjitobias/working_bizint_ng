@@ -253,14 +253,19 @@
             });
         }
 
+    $("#id_timezone").val(Intl.DateTimeFormat().resolvedOptions().timeZone);
     var maxDate = new Date();
     maxDate.setHours(23, 59, 59);
+    let tz = Intl.DateTimeFormat().resolvedOptions().timeZone;
     flatpickr("#id_datetime", {
         enableTime: true,
-        dateFormat: "Y-m-d H:i",
         maxDate: maxDate.toISOString(),
         defaultDate: new Date().toISOString(),
-        time_24hr: true
+        time_24hr: true,
+
+        formatDate: (date, format, locale) => {
+            return date.toLocaleDateString() + " " + date.toLocaleTimeString();
+        }
     });
 </script>
 {% endblock %}}

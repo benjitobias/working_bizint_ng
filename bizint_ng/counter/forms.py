@@ -8,3 +8,4 @@ class CountForm(forms.Form):
     latitude = forms.FloatField(label='latitude', widget=forms.HiddenInput(), initial=0)
     ignore_location = forms.BooleanField(label='Ignore location?', required=False, widget=forms.CheckboxInput(attrs={'onclick': 'updatePosition();'}))
     datetime = forms.CharField(label="Date", max_length=20, required=False, initial="")
+    timezone = forms.CharField(label="timezone", max_length=50, widget=forms.HiddenInput())
