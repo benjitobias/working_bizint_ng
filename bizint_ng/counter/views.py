@@ -9,7 +9,8 @@ from guardian.shortcuts import get_objects_for_user
 from calendar import month_abbr
 from django.utils import timezone
 from django.urls import reverse
-from datetime import date
+from datetime import date, datetime
+from zoneinfo import ZoneInfo
 
 from .models import Action, Count
 from .telegram_bot import update_telegram_channel
@@ -49,7 +50,12 @@ def info(request, action_id):
         note = count_form['note'].value()
         longitude = count_form['longitude'].value()
         latitude = count_form['latitude'].value()
-        action.count_set.create(count=action.get_count() + 1, note=note, longitude=longitude, latitude=latitude)
+        tzinfo = count_form['timezone'].value()
+        update_date = datetime.strptime(count_form['datetime'].value(), "%d/%m/%Y %H:%M:%S")
+        update_date = update_date.replace(tzinfo=ZoneInfo(tzinfo))
+        update_week = update_date.isocalendar()[1]
+        action.count_set.create(count=action.get_count() + 1, note=note, longitude=longitude, latitude=latitude,
+                                update_date=update_date, update_week=update_week)
 
         if request.POST.get('update_telegram'):
            update_telegram_channel(action)
