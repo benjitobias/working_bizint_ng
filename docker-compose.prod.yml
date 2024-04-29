@@ -35,6 +35,7 @@ services:
       - bizint_web
     volumes:
       - static_files:/app/static
+      - /etc/letsencrypt:/etc/letsencrypt:ro
 
 
 volumes:
