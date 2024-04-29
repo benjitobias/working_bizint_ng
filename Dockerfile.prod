@@ -14,3 +14,5 @@ RUN mkdir /app/static
 
 # RUN python manage.py collectstatic
 
+RUN mkdir -p /etc/letsencrypt/live/bizint.xyz
+
