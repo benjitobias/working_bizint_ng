@@ -31,6 +31,7 @@ services:
     build: ./nginx
     ports:
       - 80:80
+      - 443:443
     depends_on:
       - bizint_web
     volumes:
