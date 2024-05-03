@@ -2,6 +2,7 @@
 *.sqlite3
 *.sqlite3.BAK
 ignore/*
+.env*
 
 # Created by .ignore support plugin (hsz.mobi)
 ### Python template
