@@ -33,6 +33,9 @@
         {% endif %}
         <h3 style="padding-top: 75px;">Last updated: {{ action.get_latest.update_date|date:"l d F Y - H:i" }}</h3>
         <h4 style="padding-top: 75px;">Count started: {{ action.creation_date|date:"l d F Y" }}</h4>
+        <form method="GET" action="{% url 'counter:generate-csv' action.id %}">
+            <button type="submit" id="gen_csv" class="text-center mb-3 btn btn-primary">Download CSV</button>
+        </form>
     </div>
 
     <div id="accordion">

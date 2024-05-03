@@ -1,9 +1,11 @@
+import csv
+
 from django.shortcuts import render, get_object_or_404, redirect
 from django.views import generic
 from guardian.shortcuts import get_objects_for_user
 from guardian.decorators import permission_required_or_403
 from django.db.models import Count as CountFunction
-from django.http import JsonResponse
+from django.http import JsonResponse, HttpResponse
 from django.core import serializers
 from guardian.shortcuts import get_objects_for_user
 from calendar import month_abbr
@@ -16,6 +18,8 @@ from .models import Action, Count
 from .telegram_bot import update_telegram_channel
 
 from .forms import CountForm
+
+import tempfile
 
 
 class IndexView(generic.ListView):
@@ -207,7 +211,29 @@ def populate_action_graph(request, action_id):
     return JsonResponse(data=data)
 
 
+@permission_required_or_403('counter.view_action', (Action, 'id', 'action_id'))
+def generate_csv(request, action_id):
+    action = Action.objects.get(pk=action_id)
 
+    with tempfile.TemporaryFile(mode="w+") as tmp_file:
+        csv_writer = csv.writer(tmp_file, delimiter=",")
+        header = ['count', 'datetime', 'longitude', 'latitude', 'note']
+        csv_writer.writerow(header)
+        for instance in action.count_set.all():
+            instance_count = instance.count
+            update_datetime = instance.update_date.isoformat()
+            longitude = instance.longitude
+            latitude = instance.latitude
+            note = instance.note
+            data = [instance_count, update_datetime, longitude, latitude, note]
+            csv_writer.writerow(data)
+
+        tmp_file.seek(0)
+        csv_data = tmp_file.read()
+
+    response = HttpResponse(csv_data, content_type="text/csv")
+    response['Content-Disposition'] = rf'inline; filename={action.name}.csv'
+    return response
 
 
 
