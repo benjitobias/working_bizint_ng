@@ -56,11 +56,7 @@ def info(request, action_id):
         latitude = count_form['latitude'].value()
         tzinfo = count_form['timezone'].value()
 
-        # TODO create a better solution for times
-        try:
-            update_date = datetime.strptime(count_form['datetime'].value(), "%d/%m/%Y %H:%M:%S")
-        except ValueError:
-            update_date = datetime.strptime(count_form['datetime'].value(), "%Y-%m-%d %H:%M")
+        update_date = datetime.strptime(count_form['datetime'].value(), "%d/%m/%Y %H:%M:%S")
         update_date = update_date.replace(tzinfo=ZoneInfo(tzinfo))
         update_week = update_date.isocalendar()[1]
         action.count_set.create(count=action.get_count() + 1, note=note, longitude=longitude, latitude=latitude,
