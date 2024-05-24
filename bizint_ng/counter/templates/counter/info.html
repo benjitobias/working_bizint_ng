@@ -49,9 +49,19 @@
             <div id="collapseGraph" class="collapse" aria-labelledby="headingGraph" data-parent="#accordion">
                 <div class="card-body">
                     <div class="container text-center" style="width: 75%;">
-                        <canvas class="action-chart" id="action-bar-chart" data-url="populate-action-graph"></canvas>
+                        <div class="dropdown">
+                            <button class="btn btn-secondary dropdown-toggle" type="button" id="graphYearButton" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                            {{ current_year }}
+                            </button>
+                            <div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
+                                {% for action_year in action_years %}
+                                <a class="dropdown-item graph-year" id="graph-year-{{ action_year }}" onclick='getGraphDataByYear("{{ action_year }}")'>{{ action_year }}</a>
+                                {% endfor %}
+                            </div>
+                        </div>
+                        <canvas class="action-chart" id="action-bar-chart" data-url="populate-action-graph/"></canvas>
                         <div class="dropdown-divider"></div>
-                        <canvas class="action-chart" id="action-line-chart" data-url="populate-action-graph"></canvas>
+                        <canvas class="action-chart" id="action-line-chart" data-url="populate-action-graph/"></canvas>
                     </div>
                 </div>
             </div>
@@ -281,6 +291,21 @@
                 options: options
             });
         }
+
+    function getGraphDataByYear(year) {
+        $.ajax({
+            url: $actionChart.data("url"),
+            method: "POST",
+            headers: {'X-CSRFToken': '{{ csrf_token }}'},
+            data: {"year": year},
+            success: function (data) {
+                  graph_data = data;
+                  populateGraph('action-bar-chart', 'bar')
+                  populateGraph('action-line-chart', 'line')
+
+            }
+          });
+    }
 
     $("#id_timezone").val(Intl.DateTimeFormat().resolvedOptions().timeZone);
     var maxDate = new Date();

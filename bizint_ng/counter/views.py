@@ -46,6 +46,9 @@ def info(request, action_id):
     latest_update_time = action.get_latest().update_date
     now = timezone.now()
 
+    action_years = action.count_set.dates('update_date', 'year')
+    action_years = [y.year for y in action_years]
+
     if (now - latest_update_time).seconds < 60:
         hide_add = True
 
@@ -66,8 +69,9 @@ def info(request, action_id):
            update_telegram_channel(action)
 
         return redirect(reverse('counter:info', args=(action_id,)))
-
-    return render(request, 'counter/info.html', {'action': action, 'form': form, 'hide_add': hide_add, 'history': history})
+    return render(request, 'counter/info.html', {'action': action, 'form': form, 'hide_add': hide_add,
+                                                 'history': history, 'action_years': action_years,
+                                                 'current_year': now.year})
 
 
 """@permission_required_or_403('counter.change_action', (Action, 'id', 'action_id'))
@@ -195,8 +199,12 @@ def populate_action_graph(request, action_id):
     action_data['fill'] = False
     action = Action.objects.get(pk=action_id)
     action_data['label'] = action.name
+    year = datetime.now().year
+    if request.method == 'POST':
+        year = request.POST['year']
+
     for month in range(1, 13):
-        action_count = action.count_set.filter(update_date__year=2021, update_date__month=month).count()
+        action_count = action.count_set.filter(update_date__year=year, update_date__month=month).count()
         action_data['data'].append(action_count)
     datasets.append(action_data)
 
