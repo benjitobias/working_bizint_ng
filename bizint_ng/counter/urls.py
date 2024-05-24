@@ -19,4 +19,5 @@ urlpatterns = [
     path('<int:action_id>/populate-action-graph/', views.populate_action_graph, name='populate-action-graph'),
 
     path('<int:action_id>/generate-csv/', views.generate_csv, name='generate-csv'),
+    path('<int:action_id>/delete-latest/', views.delete_latest, name='delete-latest'),
 ]
