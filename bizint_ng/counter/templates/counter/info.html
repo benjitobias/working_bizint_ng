@@ -299,10 +299,10 @@
             headers: {'X-CSRFToken': '{{ csrf_token }}'},
             data: {"year": year},
             success: function (data) {
+                  $("#graphYearButton").html(year);
                   graph_data = data;
                   populateGraph('action-bar-chart', 'bar')
                   populateGraph('action-line-chart', 'line')
-
             }
           });
     }
