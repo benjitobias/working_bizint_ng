@@ -232,4 +232,8 @@ def generate_csv(request, action_id):
     return response
 
 
-
+@permission_required_or_403('counter.view_action', (Action, 'id', 'action_id'))
+def delete_latest(request, action_id):
+    action = Action.objects.get(pk=action_id)
+    action.get_latest().delete()
+    return redirect(reverse('counter:info', args=(action_id,)))

@@ -22,7 +22,6 @@
         <form class="text-center" action="{% url 'counter:info' action.id %}" method="POST">
             {% csrf_token%}
             <div>
-                <!--button type="submit" value="+1"-->
                 <button type="submit" id="add_button" class="text-center mb-3 btn btn-primary">+1</button>
                 <div class="form-check mt-3">
                     {{ form.as_p }}
@@ -109,12 +108,39 @@
                 </div>
             </div>
         </div>
+
+        <div class="card info-card">
+            <div class="card-header" id="headingTwo">
+                <h5 class="mb-0">
+                        <button class="btn btn-link collapsed" data-toggle="collapse" data-target="#collapseDeleteLatest" aria-expanded="false" aria-controls="collapseDeleteLatest">
+                        Delete Latest
+                    </button>
+                </h5>
+            </div>
+            <div style="border-top" id="collapseDeleteLatest" class="collapse" aria-labelledby="headingDeleteLatest" data-parent="#accordion">
+               <button onclick="deleteLatest()" type="submit" id="delete_button" class="text-center mt-5 mb-5 btn btn-danger">Delete Latest</button>
+            </div>
+        </div>
     </div>
-</div>
 </div>
 
 
 <script>
+
+    function deleteLatest() {
+        if (confirm("Are you sure you want to delete the latest instance?") == true) {
+            $.ajax({
+                url: window.location.pathname + 'delete-latest/',
+                type: 'GET',
+                success: function(data) {
+                    location.reload();
+                }
+            })
+        } else {
+            $('#collapseDeleteLatest').collapse('hide');
+        }
+    }
+
 
     {% if "change_action" in action_perms %}
     getPosition();
