@@ -24,24 +24,18 @@ services:
     depends_on:
       - bizint_db
     volumes:
-      - static_files:/app/static
+      - /srv/bizint-static:/app/static
     env_file:
       - ./.env.prod
-  nginx:
-    restart: always
-    container_name: bizint_nginx
-    build: ./nginx
-    ports:
-      - 80:80
-      - 443:443
-    depends_on:
-      - bizint_web
-    volumes:
-      - static_files:/app/static
-      - /etc/letsencrypt:/etc/letsencrypt:ro
+    networks:
+      - default
+      - shared_proxy
 
 
 volumes:
   postgres_data:
-  static_files:
+
+networks:
+  shared_proxy:
+    external: true
 
